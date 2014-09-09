@@ -47,24 +47,25 @@ class OrangeGrove
   end
 
   def draw_row(row)
-    row_canopy = [""]
+    row_canopy = []
     row_trunk = []
-    row_soil = []
     row.each do |tree|
       row_canopy << compose_canopy(tree)
+      row_trunk << compose_soil * 2
       row_trunk << compose_trunk(tree)
-      row_soil << compose_soil()
+      row_trunk << compose_soil * 2
     end
-    row_canopy
+    puts row_canopy.join()
+    puts row_trunk.join()
   end
 
   def compose_canopy(tree)
     if tree.orangeCount < 10
-      return " #{tree.orangeCount} "
+      return "   #{tree.orangeCount}   "
     elsif tree.orangeCount > 99
-      return "#{tree.orangeCount}"
+      return "  #{tree.orangeCount}  "
     else
-      return " #{tree.orangeCount}"
+      return "   #{tree.orangeCount}  "
     end
   end
 
@@ -79,10 +80,18 @@ class OrangeGrove
   end
 
   def compose_soil
+    if @soil_quality < 0.4
+      return "_"
+    elsif @soil_quality >= 0.4 && @soil_quality <= 0.6
+      return "."
+    elsif @soil_quality > 0.6
+      return ","
+    end
   end
 
 
   def to_s
+    puts
     puts "_"* 21
     puts
     rows = group_trees
@@ -151,11 +160,23 @@ end
 
 og = OrangeGrove.new
 
-(1..12).each do
+puts "How many trees do you want?"
+raw_input = gets.chomp
+input = raw_input.to_i
+
+if input == 0 && raw_input == "0"
+  puts "Why are you running this program then? Toodles!"
+  abort
+elsif input == 0 && raw_input != "0"
+  puts "A number, please. Let's quit and try again."
+  abort
+end
+
+(1..input - 1).each do
   og.trees[0].plant_on(og)
   og.one_year_passes
 end
 
-puts "all oranges: ", og.count_all_oranges
+puts "You have #{og.count_all_oranges} oranges."
 
-#og.to_s
+og.to_s
