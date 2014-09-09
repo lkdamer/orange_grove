@@ -174,6 +174,21 @@ end
 
 (1..input - 1).each do
   og.trees[0].plant_on(og)
+end
+
+puts "How many years should pass?"
+raw_input = gets.chomp
+input = raw_input.to_i
+
+if input == 0 && raw_input == "0"
+  puts "Why are you running this program then? Toodles!"
+  abort
+elsif input == 0 && raw_input != "0"
+  puts "A number, please. Let's quit and try again."
+  abort
+end
+
+(1..input).each do
   og.one_year_passes
 end
 
